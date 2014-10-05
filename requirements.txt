@@ -1,0 +1,5 @@
+Flask >= 0.10.1
+gaenv
+itsdangerous >= 0.24
+libearth >= 0.3.1
+Werkzeug >= 0.9.6
