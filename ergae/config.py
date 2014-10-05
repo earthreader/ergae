@@ -15,10 +15,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from flask import Flask
+from google.appengine.api.memcache import get, set
+from google.appengine.ext.db import Model
+from google.appengine.ext.ndb import PickleProperty
 
-from .dropbox import mod
+__all__ = 'Config', 'get_config', 'set_config'
 
 
-app = Flask(__name__)
-app.register_blueprint(mod)
+def get_config(key):
+    value = get(key, namespace='config')
+    if value:
+        return value
+    pair = Pair.get_by_key_name(key)
+    return pair and pair.value
+
+
+def set_config(key, value):
+    set(key, value, namespace='config')
+    Pair.get_or_insert(key, value=value)
+
+
+class Pair(Model):
+    """Key-value pair."""
+
+    value = PickleProperty()

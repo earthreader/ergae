@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title -%}
+  Configure Dropbox App &mdash; {{ super() }}
+{%- endblock %}
+{% block content %}
+  <h1 class="pure-u-1-1 box title">Configure Dropbox App</h1>
+  <div class="pure-u-1-1 pure-u-md-3-5 box">
+    <p>Dropbox App key and secret for Ergae is not configured yet.  You can
+       <a href="https://www.dropbox.com/developers/apps/create"
+          target="_blank">create a new app from Dropbox App Console</a>.</p>
+    <form class="pure-form pure-form-aligned"
+          method="post" action="{{ url_for('.save_appkey') }}">
+      <fieldset>
+        <div class="pure-control-group">
+          <label for="app-key">App key</label>
+          <input id="app-key" name="app_key" class="pure-input-1-2"
+                 type="text" required pattern="^[a-z0-9]{15}$" maxlength="15"
+                 placeholder="e.g. {{ app_key_example }}">
+        </div>
+        <div class="pure-control-group">
+          <label for="app-secret">App secret</label>
+          <input id="app-secret" name="app_secret" class="pure-input-1-2"
+                 type="text" required pattern="^[a-z0-9]{15}$" maxlength="15"
+                 placeholder="e.g. {{ app_secret_example }}">
+        </div>
+        <div class="pure-controls">
+          <button class="pure-button pure-button-primary"
+                  type="submit">Save</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <aside class="pure-u-1-1 pure-u-md-2-5 box">
+    <h2>App Requirements</h2>
+    <p>You have to choose the following options:</p>
+    <dl>
+      <dt>Which Dropbox account should own your app?</dt>
+      <dd>Personal</dd>
+      <dt>What type of app do you want to create?</dt>
+      <dd>Dropbox API app &mdash; Sync API, Datastore API, or Core API</dd>
+      <dt>What type of data does your app need to store on Dropbox?</dt>
+      <dd>Files and datastores</dd>
+      <dt>Can your app be limited to its own folder?</dt>
+      <dd>No &mdash; My app needs access to files already on Dropbox.</dd>
+      <dt>What type of files does your app need access to?</dt>
+      <dd>All file types &mdash; My app needs access to a user's full Dropbox.
+        Only supported via the Core API.</dd>
+    </dl>
+  </aside>
+{% endblock %}

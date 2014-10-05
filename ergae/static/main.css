@@ -1,0 +1,37 @@
+html, button, input, select, textarea, .pure-g [class*='pure-u'] {
+  font-family: 'Open Sans', serif;
+}
+
+p, dl, ol, ul {
+  line-height: 160%;
+}
+
+a {
+  color: #1b98f8;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+aside h1, aside h2, aside h3 {
+  color: #999;
+  font-size: medium;
+  text-transform: uppercase;
+}
+
+.box {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  cursor: default;
+  margin: 0;
+  padding: 1em;
+}
+
+.title {
+  background-color: #252a3a;
+  color: #fff;
+  font-weight: 300;
+}
