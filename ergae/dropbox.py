@@ -18,7 +18,8 @@ from __future__ import absolute_import
 import logging
 import random
 
-from dropbox.client import DropboxOAuth2Flow
+from dropbox.client import DropboxClient, DropboxOAuth2Flow
+from dropbox.session import DropboxOAuth2Session
 from flask import (Blueprint, redirect, render_template, request, session,
                    url_for)
 from werkzeug.exceptions import BadRequest, Forbidden
@@ -39,6 +40,14 @@ def get_auth_flow():
                                  url_for('.finish_auth', _external=True),
                                  session, 'dropbox-auth-csrf-token', locale,
                                  rest_client=RestClient)
+
+
+def get_client():
+    access_token = get_config('dropbox_access_token')
+    if access_token:
+        client = DropboxClient(access_token, rest_client=RestClient)
+        client.session.rest_client = RestClient
+        return client
 
 
 @mod.route('/')
@@ -71,8 +80,10 @@ def finish_auth():
         return Forbidden()
     set_config('dropbox_access_token', access_token)
     set_config('dropbox_user_id', user_id)
+    client = get_client()
+    account_info = client.account_info()
     return render_template('dropbox/finish_auth.html',
-                           dropbox_user_id=user_id)
+                           account_info=account_info)
 
 
 def make_key_example():
