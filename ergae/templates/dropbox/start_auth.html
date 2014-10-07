@@ -4,4 +4,19 @@
 {%- endblock %}
 {% block content %}
   <h1 class="pure-u-1-1 box title">Connect Dropbox</h1>
+  <div class="pure-u-1-1 box">
+    {% if error == 'not-approved' %}
+      <p>You did not approve Ergae.  Why not?</p>
+    {% else %}
+      <p>Ergae is not connected to your Dropbox yet.</p>
+      <p>In order to connect to your Dropbox Ergae needs to be approved
+         to access your Earth Reader repository in your Dropbox.</p>
+    {% endif %}
+    <a class="pure-button pure-button-primary"
+       href="{{ authorize_url }}">Sign in to Dropbox
+      {%- if error %}
+        (again)
+      {%- endif -%}
+    </a>
+  </div>
 {% endblock %}

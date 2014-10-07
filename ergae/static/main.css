@@ -15,6 +15,10 @@ a:hover {
   text-decoration: underline;
 }
 
+a.pure-button {
+  text-decoration: inherit;
+}
+
 aside h1, aside h2, aside h3 {
   color: #999;
   font-size: medium;

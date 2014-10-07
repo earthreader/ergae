@@ -15,13 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import logging
 import random
 
 from dropbox.client import DropboxOAuth2Flow
 from flask import (Blueprint, redirect, render_template, request, session,
                    url_for)
+from werkzeug.exceptions import BadRequest, Forbidden
 
 from .config import get_config, set_config
+from .rest import RestClient
 
 
 mod = Blueprint('dropbox', __name__, url_prefix='/dropbox')
@@ -32,9 +35,10 @@ def get_auth_flow():
     app_secret = get_config('dropbox_app_secret')
     if app_key and app_secret:
         locale = request.accept_languages and request.accept_languages.best
-        return DropboxOAuth2Flow(app_key, app_secret, url_for('.finish_auth'),
-                                 session, 'dropbox-auth-csrf-token',
-                                 locale)
+        return DropboxOAuth2Flow(app_key, app_secret,
+                                 url_for('.finish_auth', _external=True),
+                                 session, 'dropbox-auth-csrf-token', locale,
+                                 rest_client=RestClient)
 
 
 @mod.route('/')
@@ -42,12 +46,33 @@ def start_auth():
     auth_flow = get_auth_flow()
     if not auth_flow:
         return redirect(url_for('.appkey_form'))
-    return render_template('dropbox/start_auth.html')
+    authorize_url = auth_flow.start()
+    return render_template('dropbox/start_auth.html',
+                           authorize_url=authorize_url,
+                           error=request.args.get('error'))
 
 
 @mod.route('/callback/')
 def finish_auth():
-    pass
+    auth_flow = get_auth_flow()
+    if not auth_flow:
+        return redirect(url_for('.appkey_form'))
+    try:
+        access_token, user_id, _ = auth_flow.finish(request.args)
+    except DropboxOAuth2Flow.BadRequestException:
+        raise BadRequest()
+    except DropboxOAuth2Flow.BadStateException:
+        return redirect(url_for('.start_auth'))
+    except DropboxOAuth2Flow.NotApprovedException:
+        return redirect(url_for('.start_auth', error='not-approved'))
+    except (DropboxOAuth2Flow.CsrfException,
+            DropboxOAuth2Flow.ProviderException) as e:
+        logging.getLogger(__name__ + '.finish_auth').exception(e)
+        return Forbidden()
+    set_config('dropbox_access_token', access_token)
+    set_config('dropbox_user_id', user_id)
+    return render_template('dropbox/finish_auth.html',
+                           dropbox_user_id=user_id)
 
 
 def make_key_example():

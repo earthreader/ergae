@@ -45,6 +45,8 @@
       <dt>What type of files does your app need access to?</dt>
       <dd>All file types &mdash; My app needs access to a user's full Dropbox.
         Only supported via the Core API.</dd>
+      <dt>OAuth 2 &mdash; Redirect URIs</dt>
+      <dd><code>{{ url_for('.finish_auth', _external=True) }}</code></dd>
     </dl>
   </aside>
 {% endblock %}
