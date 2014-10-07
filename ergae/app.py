@@ -15,10 +15,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import os
+
 from flask import Flask
 
+from .config import get_config, set_config
 from .dropbox import mod
 
 
 app = Flask(__name__)
 app.register_blueprint(mod)
+
+app.secret_key = get_config('secret_key')
+if app.secret_key is None:
+    app.secret_key = os.urandom(24)
+    set_config('secret_key', app.secret_key)
