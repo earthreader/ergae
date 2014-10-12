@@ -22,7 +22,7 @@ from dropbox.client import DropboxClient, DropboxOAuth2Flow
 from dropbox.session import DropboxOAuth2Session
 from flask import (Blueprint, redirect, render_template, request, session,
                    url_for)
-from werkzeug.exceptions import BadRequest, Forbidden
+from werkzeug.exceptions import BadRequest, Forbidden, HTTPException
 
 from .config import get_config, set_config
 from .rest import RestClient
@@ -31,7 +31,7 @@ from .rest import RestClient
 mod = Blueprint('dropbox', __name__, url_prefix='/dropbox')
 
 
-def get_auth_flow():
+def get_auth_flow(redirect_on_fail=True):
     app_key = get_config('dropbox_app_key')
     app_secret = get_config('dropbox_app_secret')
     if app_key and app_secret:
@@ -40,21 +40,36 @@ def get_auth_flow():
                                  url_for('.finish_auth', _external=True),
                                  session, 'dropbox-auth-csrf-token', locale,
                                  rest_client=RestClient)
+    if redirect_on_fail:
+        raise Redirect(url_for('.appkey_form'))
 
 
-def get_client():
+def get_client(redirect_on_fail=True):
     access_token = get_config('dropbox_access_token')
     if access_token:
         client = DropboxClient(access_token, rest_client=RestClient)
         client.session.rest_client = RestClient
         return client
+    if redirect_on_fail:
+        raise Redirect(url_for('.start_auth'))
+
+
+class Redirect(HTTPException):
+
+    def __init__(self, url, code=302, description=None, response=None):
+        super(Redirect, self).__init__(description, response)
+        self.url = url
+        self.code = code
+
+    def get_headers(self, environ=None):
+        headers = {'Location': self.url}
+        headers.update(super(Redirect, self).get_headers(environ))
+        return headers
 
 
 @mod.route('/')
 def start_auth():
     auth_flow = get_auth_flow()
-    if not auth_flow:
-        return redirect(url_for('.appkey_form'))
     authorize_url = auth_flow.start()
     return render_template('dropbox/start_auth.html',
                            authorize_url=authorize_url,
@@ -64,8 +79,6 @@ def start_auth():
 @mod.route('/callback/')
 def finish_auth():
     auth_flow = get_auth_flow()
-    if not auth_flow:
-        return redirect(url_for('.appkey_form'))
     try:
         access_token, user_id, _ = auth_flow.finish(request.args)
     except DropboxOAuth2Flow.BadRequestException:
