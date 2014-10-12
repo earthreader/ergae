@@ -1,29 +1,23 @@
 html, button, input, select, textarea, .pure-g [class*='pure-u'] {
-  font-family: 'Open Sans', serif;
-}
+  font-family: 'Open Sans', serif; }
 
 p, dl, ol, ul {
-  line-height: 160%;
-}
+  line-height: 160%; }
 
 a {
   color: #1b98f8;
-  text-decoration: none;
-}
+  text-decoration: none; }
 
 a:hover {
-  text-decoration: underline;
-}
+  text-decoration: underline; }
 
 a.pure-button {
-  text-decoration: inherit;
-}
+  text-decoration: inherit; }
 
 aside h1, aside h2, aside h3 {
   color: #999;
   font-size: medium;
-  text-transform: uppercase;
-}
+  text-transform: uppercase; }
 
 .box {
   box-sizing: border-box;
@@ -31,11 +25,52 @@ aside h1, aside h2, aside h3 {
   -webkit-box-sizing: border-box;
   cursor: default;
   margin: 0;
-  padding: 1em;
-}
+  padding: 1em; }
 
 .title {
   background-color: #252a3a;
   color: #fff;
-  font-weight: 300;
-}
+  font-weight: 300; }
+
+h2.path {
+  font-weight: 300; }
+  h2.path a:before, h2.path span:before {
+    font-family: FontAwesome, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-decoration: none !important;
+    padding-right: 0.2em; }
+  h2.path a.root:before, h2.path span.root:before {
+    content: '\f16b'; }
+  h2.path a.folder:before, h2.path span.folder:before {
+    content: '\f115'; }
+
+ul.folders {
+  padding: 0; }
+  ul.folders li {
+    list-style: none; }
+    ul.folders li a:before {
+      font-family: FontAwesome, sans-serif;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      text-decoration: none !important;
+      content: '\f07b';
+      padding-right: 0.5em; }
+    ul.folders li a:hover:before {
+      content: '\f07c'; }
+    ul.folders li.up a:before {
+      content: '\f148'; }
+
+form.link-dropbox button:before {
+  font-family: FontAwesome, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none !important; }
+form.link-dropbox button.link-repository:before {
+  content: '\f058';
+  padding-right: 0.3em; }
+form.link-dropbox button.new-folder:before {
+  content: '\f114';
+  padding-right: 0.5em; }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,102 @@
+@mixin fa-icon {
+  font-family: FontAwesome, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none !important;
+}
+
+html, button, input, select, textarea, .pure-g [class*='pure-u'] {
+  font-family: 'Open Sans', serif;
+}
+
+p, dl, ol, ul {
+  line-height: 160%;
+}
+
+a {
+  color: #1b98f8;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a.pure-button {
+  text-decoration: inherit;
+}
+
+aside h1, aside h2, aside h3 {
+  color: #999;
+  font-size: medium;
+  text-transform: uppercase;
+}
+
+.box {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  cursor: default;
+  margin: 0;
+  padding: 1em;
+}
+
+.title {
+  background-color: #252a3a;
+  color: #fff;
+  font-weight: 300;
+}
+
+h2.path {
+  font-weight: 300;
+
+  a, span {
+    &:before {
+      @include fa-icon;
+
+      padding-right: 0.2em;
+    }
+
+    &.root:before { content: '\f16b'; }
+    &.folder:before { content: '\f115'; }
+  }
+}
+
+ul.folders {
+  padding: 0;
+
+  li {
+    list-style: none;
+
+    a {
+      &:before {
+        @include fa-icon;
+
+        content: '\f07b';
+        padding-right: 0.5em;
+      }
+
+      &:hover:before { content: '\f07c'; }
+    }
+
+    &.up a:before { content: '\f148'; }
+  }
+}
+
+form.link-dropbox {
+  button {
+    &:before {
+      @include fa-icon;
+    }
+
+    &.link-repository:before {
+      content: '\f058';
+      padding-right: 0.3em;
+    }
+
+    &.new-folder:before {
+      content: '\f114';
+      padding-right: 0.5em;
+    }
+  }
+}

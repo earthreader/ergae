@@ -17,11 +17,12 @@ from __future__ import absolute_import
 
 import logging
 import random
+import re
 
 from dropbox.client import DropboxClient, DropboxOAuth2Flow
-from dropbox.session import DropboxOAuth2Session
-from flask import (Blueprint, redirect, render_template, request, session,
-                   url_for)
+from dropbox.rest import ErrorResponse
+from flask import (Blueprint, abort, redirect, render_template, request,
+                   session, url_for)
 from werkzeug.exceptions import BadRequest, Forbidden, HTTPException
 
 from .config import get_config, set_config
@@ -67,7 +68,75 @@ class Redirect(HTTPException):
         return headers
 
 
-@mod.route('/')
+SUBSCRIPTION_LIST_FILENAME_PATTERN = re.compile(
+    r'/subscriptions\.[-a-z0-9_.]+\.xml$'
+)
+
+
+def is_linkable(contents):
+    if not contents:
+        return 'create'
+    sessions = any(content['path'].endswith('/.sessions')
+                   for content in contents if content['is_dir'])
+    linkable = sessions and any(
+        SUBSCRIPTION_LIST_FILENAME_PATTERN.search(content['path'])
+        for content in contents if not content['is_dir']
+    )
+    if linkable:
+        return 'link'
+
+
+def get_dropbox_path(path, client=None):
+    if client is None:
+        client = get_client()
+    result = client.metadata(path)
+    if not (result.get('is_dir') and
+                    result.get('path').lower() == path.lower()):
+        raise BadRequest()
+    return result
+
+
+@mod.route('/folders/', defaults={'path': ''})
+@mod.route('/folders/<path:path>/')
+def browse_folder(path):
+    result = get_dropbox_path('/' + path)
+    contents = result.get('contents', [])
+    folders = [content['path'].rsplit('/', 1)[-1]
+               for content in contents if content['is_dir']]
+    folders = [name for name in folders if not name.startswith('.')]
+    folders.sort()
+    up_path = result['path'].rsplit('/', 1)[0][1:]
+    return render_template('dropbox/browse_folders.html',
+                           path=path,
+                           up_path=up_path,
+                           folders=folders,
+                           linkable=is_linkable(contents))
+
+
+@mod.route('/folders/', defaults={'path': ''}, methods=['PUT'])
+@mod.route('/folders/<path:path>/', methods=['PUT'])
+def link_repository(path):
+    client = get_client()
+    result = get_dropbox_path('/' + path, client)
+    contents = result['contents']
+    if not is_linkable(contents):
+        raise BadRequest()
+    return 'TODO'
+
+
+@mod.route('/folders/', defaults={'path': ''}, methods=['POST'])
+@mod.route('/folders/<path:path>/', methods=['POST'])
+def make_folder(path):
+    client = get_client()
+    dir_path = (path and '/' + path) + '/' + request.form['name']
+    try:
+        client.file_create_folder(dir_path)
+    except ErrorResponse as e:
+        abort(e.status)
+    return redirect(url_for('.browse_folder', path=dir_path[1:]))
+
+
+@mod.route('/auth/')
 def start_auth():
     auth_flow = get_auth_flow()
     authorize_url = auth_flow.start()

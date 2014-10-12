@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title -%}
+  Link Repository &mdash; {{ super() }}
+{%- endblock %}
+{% block content %}
+  <h1 class="pure-u-1-1 box title">Link Repository</h1>
+  <div class="pure-u-1-1 box">
+    <p>Ergae needs to know where your repository is (or will be) in Dropbox.
+       Please choose the repository folder.</p>
+  </div>
+  <div class="pure-u-1-1 pure-u-md-3-5 box">
+    <h2 class="path">
+      {% if path %}
+        <a href="{{ url_for('.browse_folder') }}" class="root">Dropbox</a>
+        {% for folder in path.split('/') %}
+          &rarr;
+          {% if loop.last %}
+            <span class="folder">{{ folder }}</span>
+          {% else %}
+            <a href="{{ url_for(
+              '.browse_folder',
+              path=path.rsplit('/', loop.length - loop.index)[0]
+            ) }}" class="folder">{{ folder }}</a>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <span class="root">Dropbox</span>
+      {% endif %}
+    </h2>
+    <ul class="folders">
+      {% if path %}
+        <li class="up"><a href="{{
+          url_for('.browse_folder', path=up_path)
+        }}">Up</a></li>
+      {% endif %}
+      {% for folder in folders %}
+        <li><a href="{{
+          url_for('.browse_folder', path=(path and path ~ '/') ~ folder)
+        }}">{{ folder }}</a></li>
+      {% endfor %}
+    </ul>
+    <form class="pure-form link-dropbox">
+      <button type="submit"
+              formaction="{{ url_for('.link_repository', path=path) -}}
+                          ?_method=PUT"
+              formmethod="post"
+              {% if not linkable %} disabled {% endif %}
+              class="pure-button pure-button-primary link-repository">
+        {% if linkable == 'create' %}
+          Initialize Repository
+        {% else %}
+          Link Repository
+        {% endif %}
+      </button>
+      <input type="text" name="name" placeholder="Folder name">
+      <button type="submit"
+              formaction="{{ url_for('.make_folder', path=path) }}"
+              formmethod="post"
+              class="pure-button new-folder">New Folder</button>
+    </form>
+    <script>
+      var nameInput = $('form.link-dropbox input[name=name]').hide();
+      $('form.link-dropbox button[type=submit].new-folder').click(function (e) {
+        var name = window.prompt('New folder name:');
+        if (!name) {
+          e.stopPropagation();
+          return false;
+        }
+        nameInput.val(name);
+      });
+    </script>
+  </div>
+  <aside class="pure-u-1-1 pure-u-md-2-5 box">
+    {% if linkable == 'create' %}
+      <p>The folder <em>/{{ path }}</em> is empty so that Ergae can create
+         a new repository here.</p>
+      <p>Would you like initialize a new repository here, and then link
+         Ergae to it?</p>
+    {% elif linkable %}
+      <p>The folder <em>/{{ path }}</em> seems an Earth Reader repository!
+        Would you link Ergae to this repository?</p>
+    {% else %}
+      <p>The folder <em>/{{ path }}</em> seems not an Earth Reader repository
+         nor empty.  A folder to link has to be:</p>
+      <ul>
+        <li>Empty to create a new repository,</li>
+        <li>Or having a subdirectory named <em>.sessions</em> and
+            files named <em>subscriptions.*.xml</em> to link it as
+            a repository.</li>
+      </ul>
+    {% endif %}
+  </aside>
+{% endblock %}
