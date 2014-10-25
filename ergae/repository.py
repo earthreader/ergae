@@ -19,16 +19,22 @@ import datetime
 import operator
 import re
 import rfc822
+import shutil
 
 from google.appengine.api.files import finalize, open as fopen
 from google.appengine.api.files.blobstore import create, get_blob_key
 from google.appengine.ext.blobstore import BlobInfo, BlobReferenceProperty
 from google.appengine.ext.db import (DateTimeProperty, Model, Key,
-                                     run_in_transaction)
-
+                                     StringProperty,
+                                     create_transaction_options,
+                                     run_in_transaction_options)
+from google.appengine.ext.deferred import defer
 from libearth.repository import Repository, RepositoryKeyError
 
-__all__ = 'DataStoreRepository', 'Slot'
+from .config import get_config, set_config
+from .dropbox import get_client
+
+__all__ = 'DataStoreRepository', 'Slot', 'pull_from_dropbox'
 
 
 class DataStoreRepository(Repository):
@@ -72,7 +78,8 @@ class DataStoreRepository(Repository):
                 slot.blob.delete()
                 slot.blob = blob_info
             slot.put()
-        run_in_transaction(txn)
+        run_in_transaction_options(create_transaction_options(xg=True), txn)
+        defer(push_to_dropbox, db_key)
 
     def exists(self, key):
         super(DataStoreRepository, self).exists(key)
@@ -104,6 +111,7 @@ def make_db_key(key):
 class Slot(Model):
 
     blob = BlobReferenceProperty()
+    rev = StringProperty()
     synced_at = DateTimeProperty()
     updated_at = DateTimeProperty(required=True, auto_now_add=True)
 
@@ -114,7 +122,89 @@ class Slot(Model):
         return '<RepositoryKey {0!r}>'.format(self.path)
 
 
+def get_dropbox_client():
+    client = get_client(redirect_on_fail=False)
+    if client is None or not get_config('dropbox_path'):
+        set_config('dropbox_access_token', None)
+        set_config('dropbox_user_id', None)
+        set_config('dropbox_delta_cursor', None)
+        set_config('dropbox_path', None)
+        return
+    return client
+
+
 def parse_rfc2822(rfc2822):
     time_tuple = rfc822.parsedate_tz(rfc2822)
     timestamp = rfc822.mktime_tz(time_tuple)
     return datetime.datetime.utcfromtimestamp(timestamp)
+
+
+def push_to_dropbox(slot_key):
+    client = get_dropbox_client()
+    if client is None:
+        return
+    slot = Slot.get(slot_key)
+    f = slot.blob.open()
+    response = client.put_file('/' + slot.key().name(), f,
+                               overwrite=True,
+                               parent_rev=slot.rev)
+    f.close()
+    rfc2822 = response['modified']
+    slot.synced_at = parse_rfc2822(rfc2822)
+    slot.rev = response.rev
+    slot.put()
+
+
+def pull_from_dropbox():
+    client = get_dropbox_client()
+    if client is None:
+        return
+    path_prefix = get_config('dropbox_path')
+    cursor = get_config('dropbox_delta_cursor')
+    last_sync = get_config('dropbox_last_sync') or datetime.datetime(2000, 1, 1)
+    while 1:
+        result = client.delta(cursor, path_prefix=path_prefix.rstrip('/'))
+        for path, metadata in result['entries']:
+            if metadata and metadata['is_dir']:
+                continue
+            repo_key = path[len(path_prefix):].split('/')
+            db_key = make_db_key(repo_key)
+            if metadata:
+                rev = metadata['rev']
+                modified_at = parse_rfc2822(metadata['modified'])
+                last_sync = max(modified_at, last_sync)
+                filename = create(mime_type='text/xml')
+                with fopen(filename, 'ab') as dst:
+                    src = client.get_file(path, rev=rev)
+                    shutil.copyfileobj(src, dst)
+                finalize(filename)
+                blob_key = get_blob_key(filename)
+                blob_info = BlobInfo.get(blob_key)
+                def txn():
+                    slot = Slot.get(db_key)
+                    if slot is None:
+                        slot = Slot(
+                            db_key=db_key,
+                            blob=blob_info,
+                            rev=rev,
+                            updated_at=modified_at,
+                            synced_at=modified_at
+                        )
+                    else:
+                        slot.blob.delete()
+                        slot.blob = blob_info
+                        slot.rev = rev
+                        slot.updated_at = modified_at
+                        slot.synced_at = modified_at
+                    slot.put()
+                run_in_transaction_options(create_transaction_options(xg=True),
+                                           txn)
+            else:
+                slot = Slot.get(db_key)
+                if slot is not None:
+                    slot.delete()
+        cursor = result['cursor']
+        set_config('dropbox_delta_cursor', cursor)
+        if not result['has_more']:
+            break
+    set_config('dropbox_last_sync', last_sync)

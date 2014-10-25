@@ -25,10 +25,15 @@ handlers:
 - url: .*
   script: ergae.app.app
 
+builtins:
+- deferred: on
+
 libraries:
 - name: markupsafe
   version: latest
 - name: jinja2
   version: "2.6"
+- name: lxml
+  version: "2.3.5"
 - name: ssl
   version: latest

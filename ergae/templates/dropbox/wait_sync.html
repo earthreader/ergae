@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block head %}
+  <meta http-equiv="refresh" content="5">
+  {{ super() }}
+{% endblock %}
+{% block title -%}
+  Downloading data from Dropbox&hellip; &mdash; {{ super() }}
+{%- endblock %}
+{% block content %}
+  <h1 class="pure-u-1-1 box title">Downloading data from Dropbox&hellip;</h1>
+  <div class="pure-u-1-1 box">
+    <p>Ergae is now downloading data from Dropbox.  Please wait a minute.</p>
+  </div>
+{% endblock %}

@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import hashlib
+import hmac
 import logging
 import random
 import re
@@ -23,6 +25,7 @@ from dropbox.client import DropboxClient, DropboxOAuth2Flow
 from dropbox.rest import ErrorResponse
 from flask import (Blueprint, abort, redirect, render_template, request,
                    session, url_for)
+from google.appengine.ext.deferred import defer
 from werkzeug.exceptions import BadRequest, Forbidden, HTTPException
 
 from .config import get_config, set_config
@@ -121,7 +124,10 @@ def link_repository(path):
     contents = result['contents']
     if not is_linkable(contents):
         raise BadRequest()
-    return 'TODO'
+    set_config('dropbox_path', '/{0}/'.format(path) if path else '/')
+    from .repository import pull_from_dropbox
+    defer(pull_from_dropbox)
+    return redirect(url_for('.wait_sync'))
 
 
 @mod.route('/folders/', defaults={'path': ''}, methods=['POST'])
@@ -134,6 +140,14 @@ def make_folder(path):
     except ErrorResponse as e:
         abort(e.status)
     return redirect(url_for('.browse_folder', path=dir_path[1:]))
+
+
+@mod.route('/sync/')
+def wait_sync():
+    last_sync = get_config('dropbox_last_sync')
+    if last_sync:
+        return 'TODO: complete!'
+    return render_template('dropbox/wait_sync.html')
 
 
 @mod.route('/auth/')
@@ -189,3 +203,21 @@ def save_appkey():
     set_config('dropbox_app_key', app_key)
     set_config('dropbox_app_secret', app_secret)
     return redirect(url_for('.start_auth'))
+
+
+@mod.route('/webhook/', methods=['GET', 'POST'])
+def webhook():
+    if request.method.upper() == 'GET':
+        return request.args.get('challenge', '')
+    app_secret = get_config('dropbox_app_secret')
+    user_id = get_config('dropbox_user_id')
+    if app_secret is None:
+        raise Forbidden()
+    expected = hmac.new(app_secret, request.data, hashlib.sha256).hexdigest()
+    signature = request.headers.get('X-Dropbox-Signature')
+    if expected != signature:
+        raise Forbidden()
+    if user_id not in set(request.json['delta']['users']):
+        raise Forbidden()
+    from .repository import pull_from_dropbox
+    defer(pull_from_dropbox)
