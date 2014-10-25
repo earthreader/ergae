@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import operator
 import re
 
 from google.appengine.api.files import finalize, open as fopen
@@ -44,10 +45,10 @@ class DataStoreRepository(Repository):
 
     def read(self, key):
         super(DataStoreRepository, self).read(key)
-        db_key = make_db_key()
+        db_key = make_db_key(key)
         slot = Slot.get(db_key)
         if slot is None:
-            raise RepositoryKeyError()
+            raise RepositoryKeyError(key)
         return slot.blob.open()
 
     def write(self, key, iterable):
@@ -81,7 +82,7 @@ class DataStoreRepository(Repository):
         query = Slot.all().ancestor(parent_db_key)
         db_keys = query.run(keys_only=True)
         if not db_keys and Slot.get(parent_db_key) is None:
-            raise RepositoryKeyError()
+            raise RepositoryKeyError(key)
         return frozenset(KEY_LAST_PART_PATTERN.match(db_key.name()).group(1)
                          for db_key in db_keys)
 
@@ -90,7 +91,11 @@ KEY_LAST_PART_PATTERN = re.compile(r'(?:^|/)([^/]+)$')
 
 
 def make_db_key(key):
-    path = tuple(('Slot', '/'.join(key[:i + 1])) for i in range(len(key)))
+    path = reduce(
+        operator.add,
+        (('Slot', '/'.join(key[:i + 1])) for i in range(len(key))),
+        ()
+    )
     return Key.from_path(*path)
 
 
