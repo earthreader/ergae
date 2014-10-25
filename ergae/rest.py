@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import io
 import json
 
 from dropbox.rest import (SDK_VERSION, ErrorResponse, RESTSocketError,
@@ -86,7 +87,7 @@ class RestClientObject(object):
 
     def process_response(self, r, raw_response):
         if raw_response:
-            return r
+            return io.BytesIO(r.content)
         try:
             resp = json.loads(r.content)
         except ValueError:
