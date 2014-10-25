@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from google.appengine.api.memcache import get, set
+from google.appengine.api.memcache import delete, get, set
 from google.appengine.ext.db import Model
 from google.appengine.ext.ndb import PickleProperty
 
@@ -31,6 +31,12 @@ def get_config(key):
 
 
 def set_config(key, value):
+    if value is None:
+        pair = Pair.get(key)
+        if pair is not None:
+            pair.delete()
+        delete(key, namespace='config')
+        return
     set(key, value, namespace='config')
     Pair.get_or_insert(key, value=value)
 
