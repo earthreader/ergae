@@ -15,8 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import datetime
 import operator
 import re
+import rfc822
 
 from google.appengine.api.files import finalize, open as fopen
 from google.appengine.api.files.blobstore import create, get_blob_key
@@ -110,3 +112,9 @@ class Slot(Model):
 
     def __repr__(self):
         return '<RepositoryKey {0!r}>'.format(self.path)
+
+
+def parse_rfc2822(rfc2822):
+    time_tuple = rfc822.parsedate_tz(rfc2822)
+    timestamp = rfc822.mktime_tz(time_tuple)
+    return datetime.datetime.utcfromtimestamp(timestamp)
