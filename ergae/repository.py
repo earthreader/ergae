@@ -40,7 +40,7 @@ class DataStoreRepository(Repository):
         return cls()
 
     def to_url(self, scheme):
-        super(DataStoreRepository, self).to_url(self, scheme)
+        super(DataStoreRepository, self).to_url(scheme)
         return scheme + '://'
 
     def read(self, key):
