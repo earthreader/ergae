@@ -55,7 +55,7 @@ class DataStoreRepository(Repository):
         super(DataStoreRepository, self).write(key, iterable)
         db_key = make_db_key(key)
         filename = create(mime_type='text/xml')
-        with fopen(filename, 'wb') as f:
+        with fopen(filename, 'ab') as f:
             for chunk in iterable:
                 f.write(chunk)
         finalize(filename)
