@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import fractions
 import hashlib
 import hmac
 import logging
@@ -147,7 +148,12 @@ def wait_sync():
     last_sync = get_config('dropbox_last_sync')
     if last_sync:
         return 'TODO: complete!'
-    return render_template('dropbox/wait_sync.html')
+    try:
+        completed, total = get_config('dropbox_sync_progress')
+    except TypeError:
+        completed, total = 0, 1
+    ratio = fractions.Fraction(completed, total)
+    return render_template('dropbox/wait_sync.html', ratio=ratio)
 
 
 @mod.route('/auth/')

@@ -4,11 +4,14 @@
   {{ super() }}
 {% endblock %}
 {% block title -%}
+  ({{ (ratio * 100)|round(1) }}%)
   Downloading data from Dropbox&hellip; &mdash; {{ super() }}
 {%- endblock %}
 {% block content %}
-  <h1 class="pure-u-1-1 box title">Downloading data from Dropbox&hellip;</h1>
+  <h1 class="pure-u-1-1 box progress-{{ (ratio * 100)|int }}
+             title">Downloading data from Dropbox&hellip;</h1>
   <div class="pure-u-1-1 box">
-    <p>Ergae is now downloading data from Dropbox.  Please wait a minute.</p>
+    <p>Ergae is now downloading data from Dropbox.
+       Please wait a minute&hellip; ({{ (ratio * 100)|round(1) }}%)</p>
   </div>
 {% endblock %}

@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$link-color: #1b98f8;
+$title-background-color: #252a3a;
+$title-progress-background-color: $link-color;
+
 @mixin fa-icon {
   font-family: FontAwesome, sans-serif;
   -moz-osx-font-smoothing: grayscale;
@@ -32,7 +36,7 @@ p, dl, ol, ul {
 }
 
 a {
-  color: #1b98f8;
+  color: $link-color;
   text-decoration: none;
 }
 
@@ -60,9 +64,20 @@ aside h1, aside h2, aside h3 {
 }
 
 .title {
-  background-color: #252a3a;
+  background-color: $title-background-color;
   color: #fff;
   font-weight: 300;
+  @for $i from 1 through 100 {
+    &.progress-#{$i} {
+      background: linear-gradient(
+        to right,
+        $title-progress-background-color,
+        $title-progress-background-color percentage($i / 100),
+        $title-background-color percentage($i / 100),
+        $title-background-color
+      );
+    }
+  }
 }
 
 h2.path {
