@@ -24,6 +24,7 @@ from google.appengine.api.files import finalize, open as fopen
 from google.appengine.api.files.blobstore import create, get_blob_key
 from google.appengine.ext.blobstore import BlobInfo, BlobReferenceProperty
 from google.appengine.ext.db import (DateTimeProperty, Model, Key,
+                                     IntegerProperty,
                                      StringProperty,
                                      create_transaction_options,
                                      run_in_transaction_options)
@@ -78,7 +79,7 @@ class DataStoreRepository(Repository):
         def txn():
             slot = Slot.get(db_key)
             if slot is None:
-                slot = Slot(key=db_key, blob=blob_info)
+                slot = Slot(depth=len(key), key=db_key, blob=blob_info)
             else:
                 slot.blob.delete()
                 slot.blob = blob_info
@@ -92,11 +93,13 @@ class DataStoreRepository(Repository):
 
     def list(self, key):
         super(DataStoreRepository, self).list(key)
-        parent_db_key = make_db_key(key)
-        query = Slot.all().ancestor(parent_db_key)
-        db_keys = query.run(keys_only=True)
-        if not db_keys and Slot.get(parent_db_key) is None:
-            raise RepositoryKeyError(key)
+        if key:
+            parent_db_key = make_db_key(key)
+            db_keys = Slot.all().ancestor(parent_db_key).run(keys_only=True)
+            if key and not db_keys and Slot.get(parent_db_key) is None:
+                raise RepositoryKeyError(key)
+        else:
+            db_keys = Slot.all().filter('depth =', 0).run(keys_only=True)
         return frozenset(KEY_LAST_PART_PATTERN.match(db_key.name()).group(1)
                          for db_key in db_keys)
 
@@ -115,6 +118,7 @@ def make_db_key(key):
 
 class Slot(Model):
 
+    depth = IntegerProperty(required=True)
     blob = BlobReferenceProperty()
     rev = StringProperty()
     synced_at = DateTimeProperty()
@@ -146,12 +150,13 @@ def parse_rfc2822(rfc2822):
 
 def push_to_dropbox(slot_key):
     client = get_dropbox_client()
-    if client is None:
+    dropbox_path = get_config('dropbox_path')
+    if client is None or dropbox_path is None:
         return
     slot = Slot.get(slot_key)
     f = slot.blob.open()
     blob_size = slot.blob.size
-    dropbox_path = '/' + slot.key().name()
+    dropbox_path = dropbox_path + slot.key().name()
     if blob_size <= OUTGOING_BYTES_LIMIT:
         response = client.put_file(dropbox_path, f,
                                    overwrite=True,
@@ -218,6 +223,7 @@ def pull_from_dropbox():
                 slot = Slot.get(db_key)
                 if slot is None:
                     slot = Slot(
+                        depth=len(repo_key),
                         db_key=db_key,
                         blob=blob_info,
                         rev=rev,
