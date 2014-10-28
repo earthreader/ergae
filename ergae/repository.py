@@ -164,7 +164,7 @@ def push_to_dropbox(slot_key):
     f.close()
     rfc2822 = response['modified']
     slot.synced_at = parse_rfc2822(rfc2822)
-    slot.rev = response.rev
+    slot.rev = response['rev']
     slot.put()
 
 
