@@ -17,14 +17,16 @@ from __future__ import absolute_import
 
 import datetime
 import operator
+import random
 import re
 import rfc822
+import time
 
 from google.appengine.api.files import finalize, open as fopen
 from google.appengine.api.files.blobstore import create, get_blob_key
 from google.appengine.ext.blobstore import BlobInfo, BlobReferenceProperty
-from google.appengine.ext.db import (DateTimeProperty, Model, Key,
-                                     IntegerProperty,
+from google.appengine.ext.db import (DateTimeProperty, EntityNotFoundError,
+                                     IntegerProperty, Model, Key,
                                      StringProperty,
                                      create_transaction_options,
                                      run_in_transaction_options)
@@ -69,18 +71,23 @@ class DataStoreRepository(Repository):
         super(DataStoreRepository, self).write(key, iterable)
         db_key = make_db_key(key)
         filename = create(mime_type='text/xml')
+        size = 0
         with fopen(filename, 'ab') as f:
             for chunk in iterable:
                 f.write(chunk)
+                size += len(chunk)
         finalize(filename)
         blob_key = get_blob_key(filename)
         blob_info = BlobInfo.get(blob_key)
+        assert blob_info.size == size
+        assert isinstance(blob_info, BlobInfo)
 
         def txn():
             slot = Slot.get(db_key)
             if slot is None:
                 slot = Slot(depth=len(key), key=db_key, blob=blob_info)
             else:
+                assert isinstance(slot.blob, BlobInfo)
                 slot.blob.delete()
                 slot.blob = blob_info
             slot.put()
@@ -155,7 +162,12 @@ def push_to_dropbox(slot_key):
         return
     slot = Slot.get(slot_key)
     f = slot.blob.open()
-    blob_size = slot.blob.size
+    blob_size = None
+    while blob_size is None:
+        try:
+            blob_size = slot.blob.size
+        except EntityNotFoundError:
+            time.sleep(random.randrange(1, 5))
     dropbox_path = dropbox_path + slot.key().name()
     if blob_size <= OUTGOING_BYTES_LIMIT:
         response = client.put_file(dropbox_path, f,
