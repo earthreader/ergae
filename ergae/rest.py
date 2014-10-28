@@ -59,9 +59,10 @@ class RestClientObject(object):
             body = params_to_urlencoded(post_params)
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
-        # Handle StringIO instances, because urllib3 doesn't.
         if hasattr(body, 'getvalue'):
             body = str(body.getvalue())
+        elif callable(getattr(body, 'read')):
+            body = body.read()
 
         # Reject any headers containing newlines; the error from the server
         # isn't pretty.
