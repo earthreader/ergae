@@ -15,25 +15,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-import os
+from google.appengine.api.app_identity import get_application_id
+from libearth.session import Session
+from libearth.stage import Stage
 
-from flask import Flask
+from .repository import DataStoreRepository
 
-from .config import get_config, set_config
-from .dropbox import mod as dropbox
-from .reader import mod as reader
-from .util import MethodRewriteMiddleware
-
-__all__ = 'app',
+__all__ = 'get_session', 'get_stage'
 
 
-app = Flask(__name__)
-app.register_blueprint(dropbox)
-app.register_blueprint(reader)
+def get_session():
+    session_id = 'ergae-{0}'.format(get_application_id())
+    return Session(session_id)
 
-app.secret_key = get_config('secret_key')
-if app.secret_key is None:
-    app.secret_key = os.urandom(24)
-    set_config('secret_key', app.secret_key)
 
-app.wsgi_app = MethodRewriteMiddleware(app.wsgi_app)
+def get_stage():
+    repository = DataStoreRepository()
+    session = get_session()
+    return Stage(session, repository)

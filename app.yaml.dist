@@ -22,8 +22,11 @@ threadsafe: yes
 handlers:
 - url: /static
   static_dir: ergae/static
+  secure: always
 - url: .*
   script: ergae.app.app
+  secure: always
+  login: admin
 
 builtins:
 - deferred: on

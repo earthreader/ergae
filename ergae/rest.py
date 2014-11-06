@@ -61,7 +61,7 @@ class RestClientObject(object):
 
         if hasattr(body, 'getvalue'):
             body = str(body.getvalue())
-        elif callable(getattr(body, 'read')):
+        elif callable(getattr(body, 'read', None)):
             body = body.read()
 
         # Reject any headers containing newlines; the error from the server

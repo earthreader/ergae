@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title -%}
+  Initialize Subscriptions &mdash; {{ super() }}
+{%- endblock %}
+{% block content %}
+  <h1 class="pure-u-1-1 box title">Initialize Subscriptions</h1>
+  <div class="pure-u-1-1 box">
+    <p>There isn&rsquo;t no subscription list yet.
+       Fill your name and its title!</p>
+    <form class="pure-form pure-form-aligned" method="post"
+          action="{{ url_for('.initialize_subscriptions') }}">
+      <fieldset>
+        <div class="pure-control-group">
+          <label for="owner-name">Your name</label>
+          <input id="owner-name" name="owner_name" class="pure-input-1-2"
+                 type="text" required placeholder="required"
+                 value="{{ current_user.nickname() }}">
+        </div>
+        <div class="pure-control-group">
+          <label for="owner-email">Your email</label>
+          <input id="owner-email" name="owner_email" class="pure-input-1-2"
+                 type="email" placeholder="optional"
+                 value="{{ current_user.email() }}">
+        </div>
+        <div class="pure-control-group">
+          <label for="owner-uri">Your website</label>
+          <input id="owner-uri" name="owner_uri" class="pure-input-1-2"
+                 type="url" placeholder="optional">
+        </div>
+        <div class="pure-control-group">
+          <label for="title">List title</label>
+          <input id="title" name="title" class="pure-input-1-2"
+                 type="text" required placeholder="required"
+                 value="{{ current_user.nickname() }}&rsquo;s Subscriptions">
+        </div>
+        <div class="pure-controls">
+          <button class="pure-button pure-button-primary"
+                  type="submit">Start</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+{% endblock %}
+{% block body %}
+  {{ super() }}
+  <script>
+  // <![CDATA[
+  (function () {
+    var $ownerName = $('input[name=owner_name]'),
+        $title = $('input[name=title]');
+    var getDefaultTitle = function () {
+      var name = $ownerName.val();
+      if (name == '') {
+        return '';
+      }
+      return name + '\u2019s Subscriptions';
+    };
+    var previousDefaultTitle = getDefaultTitle();
+    var fillDefaultTitle = function () {
+      if (previousDefaultTitle != $title.val()) {
+        return;
+      }
+      var defaultTitle = getDefaultTitle();
+      $title.val(defaultTitle);
+      previousDefaultTitle = defaultTitle;
+    };
+    $ownerName.on({
+      change: fillDefaultTitle,
+      keyup: fillDefaultTitle
+    });
+  })();
+  // ]]>
+  </script>
+{% endblock %}
