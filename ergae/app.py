@@ -18,6 +18,8 @@ from __future__ import absolute_import
 import os
 
 from flask import Flask
+from gae_mini_profiler.profiler import ProfilerWSGIMiddleware
+from gae_mini_profiler.templatetags import profiler_includes
 
 from .config import get_config, set_config
 from .dropbox import mod as dropbox
@@ -36,4 +38,7 @@ if app.secret_key is None:
     app.secret_key = os.urandom(24)
     set_config('secret_key', app.secret_key)
 
+app.jinja_env.globals['profiler_includes'] = profiler_includes
+
 app.wsgi_app = MethodRewriteMiddleware(app.wsgi_app)
+app.wsgi_app = ProfilerWSGIMiddleware(app.wsgi_app)
