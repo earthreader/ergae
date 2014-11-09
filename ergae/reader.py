@@ -17,6 +17,7 @@ from __future__ import absolute_import
 
 from flask import Blueprint, g, redirect, render_template, request, url_for
 from google.appengine.api.users import get_current_user
+from libearth.defaults import get_default_subscriptions
 from libearth.feed import Person
 from libearth.subscribe import SubscriptionList
 
@@ -50,8 +51,22 @@ def setup_stage():
 
 @mod.route('/subscriptions/initialize/')
 def initialize_subscriptions_form():
+    current_user = get_current_user()
+    default_owner = Person(name=current_user.nickname(),
+                           email=current_user.email())
+    default_title = None
+    with g.stage:
+        subscriptions = g.stage.subscriptions
+        if subscriptions is not None:
+            default_owner = subscriptions.owner
+            default_title = subscriptions.title
+    default_title_format = u'{name}\u2019s Subscriptions'
+    if default_title is None:
+        default_title = default_title_format.format(name=default_owner.name)
     return render_template('reader/initialize_subscriptions_form.html',
-                           current_user=get_current_user())
+                           default_title_format=default_title_format,
+                           default_owner=default_owner,
+                           default_title=default_title)
 
 
 @mod.route('/subscriptions/initialize/', methods=['POST'])
@@ -72,7 +87,9 @@ def initialize_subscriptions():
     with g.stage:
         subscriptions = g.stage.subscriptions
         if subscriptions is None:
-            subscriptions = SubscriptionList()
+            subscriptions = get_default_subscriptions()
+            subscriptions.owner = None
+            subscriptions.title = None
         if owner:
             subscriptions.owner = owner
         if title:

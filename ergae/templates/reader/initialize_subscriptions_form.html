@@ -14,24 +14,25 @@
           <label for="owner-name">Your name</label>
           <input id="owner-name" name="owner_name" class="pure-input-1-2"
                  type="text" required placeholder="required"
-                 value="{{ current_user.nickname() }}">
+                 value="{{ default_owner.name }}">
         </div>
         <div class="pure-control-group">
           <label for="owner-email">Your email</label>
           <input id="owner-email" name="owner_email" class="pure-input-1-2"
                  type="email" placeholder="optional"
-                 value="{{ current_user.email() }}">
+                 value="{{ default_owner.email }}">
         </div>
         <div class="pure-control-group">
           <label for="owner-uri">Your website</label>
           <input id="owner-uri" name="owner_uri" class="pure-input-1-2"
-                 type="url" placeholder="optional">
+                 type="url" placeholder="optional"
+                 value="{{ default_owner.uri }}">
         </div>
         <div class="pure-control-group">
           <label for="title">List title</label>
           <input id="title" name="title" class="pure-input-1-2"
                  type="text" required placeholder="required"
-                 value="{{ current_user.nickname() }}&rsquo;s Subscriptions">
+                 value="{{ default_title }}">
         </div>
         <div class="pure-controls">
           <button class="pure-button pure-button-primary"
@@ -47,13 +48,14 @@
   // <![CDATA[
   (function () {
     var $ownerName = $('input[name=owner_name]'),
-        $title = $('input[name=title]');
+        $title = $('input[name=title]'),
+        defaultTitleFormat = {{ default_title_format|tojson|safe }};
     var getDefaultTitle = function () {
       var name = $ownerName.val();
       if (name == '') {
         return '';
       }
-      return name + '\u2019s Subscriptions';
+      return defaultTitleFormat.replace('{name}', name);
     };
     var previousDefaultTitle = getDefaultTitle();
     var fillDefaultTitle = function () {
