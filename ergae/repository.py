@@ -16,6 +16,7 @@
 from __future__ import absolute_import
 
 import datetime
+import logging
 import operator
 import random
 import re
@@ -81,18 +82,25 @@ class DataStoreRepository(Repository):
         blob_info = BlobInfo.get(blob_key)
         assert blob_info.size == size
         assert isinstance(blob_info, BlobInfo)
+        now = datetime.datetime.utcnow()
 
         def txn():
             slot = Slot.get(db_key)
             if slot is None:
-                slot = Slot(depth=len(key), key=db_key, blob=blob_info)
+                slot = Slot(
+                    depth=len(key),
+                    key=db_key,
+                    blob=blob_info,
+                    updated_at=now
+                )
             else:
                 assert isinstance(slot.blob, BlobInfo)
                 slot.blob.delete()
                 slot.blob = blob_info
+                slot.updated_at = now
             slot.put()
         run_in_transaction_options(create_transaction_options(xg=True), txn)
-        defer(push_to_dropbox, db_key)
+        defer(push_to_dropbox, db_key, now)
 
     def exists(self, key):
         super(DataStoreRepository, self).exists(key)
@@ -155,29 +163,37 @@ def parse_rfc2822(rfc2822):
     return datetime.datetime.utcfromtimestamp(timestamp)
 
 
-def push_to_dropbox(slot_key):
+def push_to_dropbox(slot_key, now):
+    logger = logging.getLogger(__name__ + '.push_to_dropbox')
     client = get_dropbox_client()
     dropbox_path = get_config('dropbox_path')
     if client is None or dropbox_path is None:
         return
-    slot = Slot.get(slot_key)
-    f = slot.blob.open()
     blob_size = None
     while blob_size is None:
+        slot = Slot.get(slot_key)
+        dropbox_filename = dropbox_path + slot.key().name()
+        if slot.updated_at < now:
+            logger.info('%s was updated (at %s) after %s',
+                        dropbox_filename, slot.updated_at, now)
+            return
+        logger.info('pushing %s to dropbox', dropbox_filename)
+        f = slot.blob.open()
         try:
             blob_size = slot.blob.size
         except EntityNotFoundError:
+            logger.info('failed to load %s from dirty buffer; retry...',
+                        dropbox_filename)
             time.sleep(random.randrange(1, 5))
-    dropbox_path = dropbox_path + slot.key().name()
     if blob_size <= OUTGOING_BYTES_LIMIT:
-        response = client.put_file(dropbox_path, f,
+        response = client.put_file(dropbox_filename, f,
                                    overwrite=True,
                                    parent_rev=slot.rev)
     else:
         uploader = client.get_chunked_uploader(f, blob_size)
         while uploader.offset < blob_size:
             uploader.upload_chunked(OUTGOING_BYTES_LIMIT)
-        uploader.finish(dropbox_path, overwrite=True, parent_rev=slot.rev)
+        uploader.finish(dropbox_filename, overwrite=True, parent_rev=slot.rev)
     f.close()
     rfc2822 = response['modified']
     slot.synced_at = parse_rfc2822(rfc2822)
