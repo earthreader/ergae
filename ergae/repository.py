@@ -114,9 +114,10 @@ class DataStoreRepository(Repository):
             if key and not db_keys and Slot.get(parent_db_key) is None:
                 raise RepositoryKeyError(key)
         else:
-            db_keys = Slot.all().filter('depth =', 0).run(keys_only=True)
-        return frozenset(KEY_LAST_PART_PATTERN.match(db_key.name()).group(1)
-                         for db_key in db_keys)
+            db_keys = Slot.all().filter('depth <=', 1).run(keys_only=True)
+        key_names = [db_key.name() for db_key in db_keys]
+        return frozenset(KEY_LAST_PART_PATTERN.match(key_name).group(1)
+                         for key_name in key_names)
 
 
 KEY_LAST_PART_PATTERN = re.compile(r'(?:^|/)([^/]+)$')
@@ -252,7 +253,7 @@ def pull_from_dropbox():
                 if slot is None:
                     slot = Slot(
                         depth=len(repo_key),
-                        db_key=db_key,
+                        key=db_key,
                         blob=blob_info,
                         rev=rev,
                         updated_at=modified_at,
