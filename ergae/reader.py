@@ -19,7 +19,6 @@ from flask import Blueprint, g, redirect, render_template, request, url_for
 from google.appengine.api.users import get_current_user
 from libearth.defaults import get_default_subscriptions
 from libearth.feed import Person
-from libearth.subscribe import SubscriptionList
 
 from .config import get_config
 from .stage import get_stage
@@ -54,7 +53,7 @@ def redirect_to_subscriptions():
     return redirect(url_for('.subscriptions'))
 
 
-@mod.route('/subscriptions/initialize/')
+@mod.route('/feeds/initialize/')
 def initialize_subscriptions_form():
     current_user = get_current_user()
     default_owner = Person(name=current_user.nickname(),
@@ -74,7 +73,7 @@ def initialize_subscriptions_form():
                            default_title=default_title)
 
 
-@mod.route('/subscriptions/initialize/', methods=['POST'])
+@mod.route('/feeds/initialize/', methods=['POST'])
 def initialize_subscriptions():
     def form(field):
         value = request.form.get(field)
@@ -103,7 +102,7 @@ def initialize_subscriptions():
     return redirect(url_for('.subscriptions'))
 
 
-@mod.route('/subscriptions/')
+@mod.route('/feeds/')
 def subscriptions():
     with g.stage:
         subscriptions = g.stage.subscriptions.recursive_subscriptions
