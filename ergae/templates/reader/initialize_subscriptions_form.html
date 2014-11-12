@@ -14,25 +14,25 @@
           <label for="owner-name">Your name</label>
           <input id="owner-name" name="owner_name" class="pure-input-1-2"
                  type="text" required placeholder="required"
-                 value="{{ default_owner.name }}">
+                 value="{{ default_owner.name or '' }}">
         </div>
         <div class="pure-control-group">
           <label for="owner-email">Your email</label>
           <input id="owner-email" name="owner_email" class="pure-input-1-2"
                  type="email" placeholder="optional"
-                 value="{{ default_owner.email }}">
+                 value="{{ default_owner.email or '' }}">
         </div>
         <div class="pure-control-group">
           <label for="owner-uri">Your website</label>
           <input id="owner-uri" name="owner_uri" class="pure-input-1-2"
                  type="url" placeholder="optional"
-                 value="{{ default_owner.uri }}">
+                 value="{{ default_owner.uri or '' }}">
         </div>
         <div class="pure-control-group">
           <label for="title">List title</label>
           <input id="title" name="title" class="pure-input-1-2"
                  type="text" required placeholder="required"
-                 value="{{ default_title }}">
+                 value="{{ default_title or '' }}">
         </div>
         <div class="pure-controls">
           <button class="pure-button pure-button-primary"
