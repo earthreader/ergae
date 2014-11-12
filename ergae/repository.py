@@ -292,6 +292,8 @@ def pull_from_dropbox():
             last_sync = max(modified_at, last_sync)
             filename = create(mime_type='text/xml')
             cache_value = None
+            cache_buffer = []
+            dst_size = 0
             with fopen(filename, 'ab') as dst:
                 for offset in xrange(0, metadata['bytes'],
                                      INCOMING_BYTES_LIMIT):
@@ -302,14 +304,15 @@ def pull_from_dropbox():
                     while 1:
                         chunk = src.read(10240)
                         if chunk:
+                            dst_size += len(chunk)
                             dst.write(chunk)
+                            if dst_size < CACHE_BYTES_LIMIT:
+                                cache_buffer.append(chunk)
                         else:
                             break
-                dst_size = dst.tell()
                 if dst_size < CACHE_BYTES_LIMIT:
-                    dst.seek(0)
-                    cache_value = dst.read()
-                    dst.seek(dst_size)
+                    cache_value = ''.join(cache_buffer)
+                    del cache_buffer
             finalize(filename)
             blob_key = get_blob_key(filename)
             blob_info = BlobInfo.get(blob_key)

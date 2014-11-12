@@ -27,6 +27,10 @@ handlers:
 - url: /static
   static_dir: ergae/static
   secure: always
+- url: /dropbox/webhook/
+  script: ergae.app.app
+  secure: always
+  login: optional
 - url: .*
   script: ergae.app.app
   secure: always
