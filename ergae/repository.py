@@ -34,6 +34,7 @@ from google.appengine.ext.db import (DateTimeProperty, EntityNotFoundError,
                                      create_transaction_options,
                                      run_in_transaction_options)
 from google.appengine.ext.deferred import defer
+import itertools
 from libearth.repository import Repository, RepositoryKeyError
 
 from .config import get_config, set_config
@@ -81,51 +82,21 @@ class DataStoreRepository(Repository):
 
     def write(self, key, iterable):
         super(DataStoreRepository, self).write(key, iterable)
-        db_key = make_db_key(key)
-        filename = create(mime_type='text/xml')
-        cache_value = None
         size = 0
-        with fopen(filename, 'ab') as f:
-            cache_value_buffer = []
-            for chunk in iterable:
-                f.write(chunk)
-                size += len(chunk)
-                if size < CACHE_BYTES_LIMIT:
-                    cache_value_buffer.append(chunk)
-            if size < CACHE_BYTES_LIMIT:
-                cache_value = ''.join(cache_value_buffer)
-                del cache_value_buffer
-        finalize(filename)
-        blob_key = get_blob_key(filename)
-        blob_info = BlobInfo.get(blob_key)
-        assert blob_info.size == size
-        assert isinstance(blob_info, BlobInfo)
-        now = datetime.datetime.utcnow()
-        cache_key = make_cache_key(key)
-        list_cache_key = make_cache_key(key[:-1])
-
-        def txn():
-            delete(cache_key, namespace='slot')
-            delete(list_cache_key, namespace='list')
-            slot = Slot.get(db_key)
-            if slot is None:
-                slot = Slot(
-                    depth=len(key),
-                    key=db_key,
-                    blob=blob_info,
-                    updated_at=now
-                )
-            else:
-                assert isinstance(slot.blob, BlobInfo)
-                slot.blob.delete()
-                slot.blob = blob_info
-                slot.updated_at = now
-            slot.put()
-            if cache_value is not None:
-                put(cache_key, cache_value, namespace='slot')
-            delete(list_cache_key, namespace='list')
-        run_in_transaction_options(create_transaction_options(xg=True), txn)
-        defer(push_to_dropbox, db_key, now)
+        cache_value_buffer = []
+        for chunk in iterable:
+            size += len(chunk)
+            cache_value_buffer.append(chunk)
+            if size >= CACHE_BYTES_LIMIT:
+                break
+        else:
+            cache_key = make_cache_key(key)
+            cache_value = ''.join(cache_value_buffer)
+            put(cache_key, cache_value, namespace='slot')
+            defer(put_slot, key, cache_value_buffer)
+            return
+        iterable = itertools.chain(cache_value_buffer, iterable)
+        put_slot(key, iterable)
 
     def exists(self, key):
         super(DataStoreRepository, self).exists(key)
@@ -189,6 +160,48 @@ class Slot(Model):
 
     def __repr__(self):
         return '<RepositoryKey {0!r}>'.format(self.path)
+
+
+def put_slot(key, iterable):
+    db_key = make_db_key(key)
+    filename = create(mime_type='text/xml')
+    size = 0
+    with fopen(filename, 'ab') as f:
+        for chunk in iterable:
+            f.write(chunk)
+            size += len(chunk)
+    finalize(filename)
+    blob_key = get_blob_key(filename)
+    blob_info = BlobInfo.get(blob_key)
+    assert blob_info.size == size, (
+        'blob_info.size = {0!r}, size = {1!r}'.format(blob_info.size, size)
+    )
+    assert isinstance(blob_info, BlobInfo)
+    now = datetime.datetime.utcnow()
+    cache_key = make_cache_key(key)
+    list_cache_key = make_cache_key(key[:-1])
+
+    def txn():
+        delete(cache_key, namespace='slot')
+        delete(list_cache_key, namespace='list')
+        slot = Slot.get(db_key)
+        if slot is None:
+            slot = Slot(
+                depth=len(key),
+                key=db_key,
+                blob=blob_info,
+                updated_at=now
+            )
+        else:
+            assert isinstance(slot.blob, BlobInfo)
+            slot.blob.delete()
+            slot.blob = blob_info
+            slot.updated_at = now
+        slot.put()
+        delete(list_cache_key, namespace='list')
+
+    run_in_transaction_options(create_transaction_options(xg=True), txn)
+    defer(push_to_dropbox, db_key, now)
 
 
 def get_dropbox_client():
