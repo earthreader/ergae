@@ -49,6 +49,11 @@ def setup_stage():
             return redirect(url_for('.initialize_subscriptions_form'))
 
 
+@mod.route('/')
+def redirect_to_subscriptions():
+    return redirect(url_for('.subscriptions'))
+
+
 @mod.route('/subscriptions/initialize/')
 def initialize_subscriptions_form():
     current_user = get_current_user()
@@ -95,4 +100,12 @@ def initialize_subscriptions():
         if title:
             subscriptions.title = title
         g.stage.subscriptions = subscriptions
-    return 'Success!'
+    return redirect(url_for('.subscriptions'))
+
+
+@mod.route('/subscriptions/')
+def subscriptions():
+    with g.stage:
+        subscriptions = g.stage.subscriptions.recursive_subscriptions
+        return render_template('reader/subscriptions.html',
+                               subscriptions=subscriptions)

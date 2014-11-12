@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title -%}
+  {{ subscriptions.title }} &mdash; {{ super() }}
+{%- endblock %}
+{% block content %}
+  <nav class="subscription-list pure-u-1-6">
+    <ul>
+      {% for sub in subscriptions|sort(attribute='label') %}
+        <li><a href="?{{ sub.feed_id }}">{{ sub.label }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <aside class="entry-list pure-u-1-4">
+    {%- block entry_list -%}
+    {%- endblock -%}
+  </aside>
+  <article class="entry pure-u-7-12">
+    {%- block entry -%}
+      No entry selected
+    {%- endblock -%}
+  </article>
+{% endblock %}

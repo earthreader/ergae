@@ -19,6 +19,7 @@
 $link-color: #1b98f8;
 $title-background-color: #252a3a;
 $title-progress-background-color: $link-color;
+$subscription-list-background-color: $title-background-color;
 
 @mixin fa-icon {
   font-family: FontAwesome, sans-serif;
@@ -132,4 +133,14 @@ form.link-dropbox {
       padding-right: 0.5em;
     }
   }
+}
+
+nav.subscription-list {
+  background-color: $subscription-list-background-color;
+}
+
+aside.entry-list {
+}
+
+article.entry {
 }

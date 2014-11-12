@@ -147,7 +147,7 @@ def make_folder(path):
 def wait_sync():
     last_sync = get_config('dropbox_last_sync')
     if last_sync:
-        return 'TODO: complete!'
+        return redirect(url_for('reader.subscriptions'))
     try:
         completed, total = get_config('dropbox_sync_progress')
     except TypeError:
