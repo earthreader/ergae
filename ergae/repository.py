@@ -26,7 +26,8 @@ import time
 
 from google.appengine.api.files import finalize, open as fopen
 from google.appengine.api.files.blobstore import create, get_blob_key
-from google.appengine.api.memcache import delete, get, set as put
+from google.appengine.api.memcache import (delete, delete_multi,
+                                           get, set as put)
 from google.appengine.ext.blobstore import BlobInfo, BlobReferenceProperty
 from google.appengine.ext.db import (DateTimeProperty, EntityNotFoundError,
                                      IntegerProperty, Model, Key,
@@ -45,7 +46,7 @@ __all__ = ('INCOMING_BYTES_LIMIT', 'OUTGOING_BYTES_LIMIT',
            'make_db_key', 'pull_from_dropbox', 'push_to_dropbox')
 
 
-INCOMING_BYTES_LIMIT = 31 * 1000 * 1000  # 31MB
+INCOMING_BYTES_LIMIT = 30 * 1000 * 1000  # 30MB
 OUTGOING_BYTES_LIMIT = 9 * 1000 * 1000  # 9MB
 CACHE_BYTES_LIMIT = 1000 * 1000 - 256 - 96  # 1MB - cache key size - 96 bytes
 
@@ -60,6 +61,13 @@ class DataStoreRepository(Repository):
     def from_url(cls, url):
         return cls()
 
+    def __new__(cls):
+        instance = getattr(cls, '_instance', None)
+        if instance is None:
+            instance = Repository.__new__(cls)
+            cls._instance = instance
+        return instance
+
     def to_url(self, scheme):
         super(DataStoreRepository, self).to_url(scheme)
         return scheme + '://'
@@ -69,19 +77,30 @@ class DataStoreRepository(Repository):
         cache_key = make_cache_key(key)
         cached = get(cache_key, namespace='slot')
         if cached is not None:
-            return cached,
+            return cached[1:],
         db_key = make_db_key(key)
         slot = Slot.get(db_key)
         if slot is None:
             raise RepositoryKeyError(key)
         blob = slot.blob.open()
         if slot.blob.size < CACHE_BYTES_LIMIT:
-            put(cache_key, blob.read(), namespace='slot')
+            put(cache_key, 'F' + blob.read(), namespace='slot')
             blob.seek(0)
         return blob
 
     def write(self, key, iterable):
         super(DataStoreRepository, self).write(key, iterable)
+        parent_cache_keys = []
+        for i in xrange(1, len(key)):
+            parent_key = key[:i]
+            if not self.exists(parent_key):
+                Slot(
+                    depth=len(parent_key),
+                    key=make_db_key(parent_key),
+                    blob=None
+                ).put()
+        delete_multi(parent_cache_keys, namespace='slot')
+        delete_multi(parent_cache_keys, namespace='list')
         size = 0
         cache_value_buffer = []
         for chunk in iterable:
@@ -91,7 +110,7 @@ class DataStoreRepository(Repository):
                 break
         else:
             cache_key = make_cache_key(key)
-            cache_value = ''.join(cache_value_buffer)
+            cache_value = ''.join(itertools.chain('F', cache_value_buffer))
             put(cache_key, cache_value, namespace='slot')
             defer(put_slot, key, cache_value_buffer)
             return
@@ -109,7 +128,7 @@ class DataStoreRepository(Repository):
 
     def list(self, key):
         super(DataStoreRepository, self).list(key)
-        cache_key = make_cache_key(key[:-1])
+        cache_key = make_cache_key(key)
         list_cache = get(cache_key, namespace='list')
         if list_cache is not None:
             return list_cache
@@ -121,8 +140,9 @@ class DataStoreRepository(Repository):
         else:
             db_keys = Slot.all().filter('depth <=', 1).run(keys_only=True)
         key_names = [db_key.name() for db_key in db_keys]
-        children = frozenset(KEY_LAST_PART_PATTERN.match(key_name).group(1)
+        children = frozenset(KEY_LAST_PART_PATTERN.search(key_name).group(1)
                              for key_name in key_names)
+        put(cache_key, 'D', namespace='slot')
         put(cache_key, children, namespace='list')
         return children
 
@@ -275,7 +295,6 @@ def pull_from_dropbox():
         entries.extend(
             (path, metadata)
             for path, metadata in result['entries']
-            if not (metadata and metadata['is_dir'])
         )
         cursor = result['cursor']
         set_config('dropbox_delta_cursor', cursor)
@@ -285,37 +304,43 @@ def pull_from_dropbox():
         repo_key = path[len(path_prefix):].split('/')
         cache_key = make_cache_key(repo_key)
         list_cache_key = make_cache_key(repo_key[:-1])
+        if not repo_key or any(not part for part in repo_key):
+            continue
         db_key = make_db_key(repo_key)
         if metadata:
             rev = metadata['rev']
             modified_at = parse_rfc2822(metadata['modified'])
             last_sync = max(modified_at, last_sync)
-            filename = create(mime_type='text/xml')
-            cache_value = None
-            cache_buffer = []
-            dst_size = 0
-            with fopen(filename, 'ab') as dst:
-                for offset in xrange(0, metadata['bytes'],
-                                     INCOMING_BYTES_LIMIT):
-                    src = client.get_file(path,
-                                          rev=rev,
-                                          start=offset,
-                                          length=offset)
-                    while 1:
-                        chunk = src.read(10240)
-                        if chunk:
-                            dst_size += len(chunk)
-                            dst.write(chunk)
-                            if dst_size < CACHE_BYTES_LIMIT:
-                                cache_buffer.append(chunk)
-                        else:
-                            break
-                if dst_size < CACHE_BYTES_LIMIT:
-                    cache_value = ''.join(cache_buffer)
-                    del cache_buffer
-            finalize(filename)
-            blob_key = get_blob_key(filename)
-            blob_info = BlobInfo.get(blob_key)
+            if metadata['is_dir']:
+                blob_info = None
+                cache_value = 'D'
+            else:
+                filename = create(mime_type='text/xml')
+                cache_value = None
+                cache_buffer = ['F']
+                dst_size = 0
+                with fopen(filename, 'ab') as dst:
+                    for offset in xrange(0, metadata['bytes'],
+                                         INCOMING_BYTES_LIMIT):
+                        src = client.get_file(path,
+                                              rev=rev,
+                                              start=offset,
+                                              length=offset)
+                        while 1:
+                            chunk = src.read(10240)
+                            if chunk:
+                                dst_size += len(chunk)
+                                dst.write(chunk)
+                                if dst_size < CACHE_BYTES_LIMIT:
+                                    cache_buffer.append(chunk)
+                            else:
+                                break
+                    if dst_size < CACHE_BYTES_LIMIT:
+                        cache_value = ''.join(cache_buffer)
+                        del cache_buffer
+                finalize(filename)
+                blob_key = get_blob_key(filename)
+                blob_info = BlobInfo.get(blob_key)
             def txn():
                 delete(cache_key, namespace='slot')
                 delete(list_cache_key, namespace='list')
@@ -330,7 +355,8 @@ def pull_from_dropbox():
                         synced_at=modified_at
                     )
                 else:
-                    slot.blob.delete()
+                    if slot.blob is not None:
+                        slot.blob.delete()
                     slot.blob = blob_info
                     slot.rev = rev
                     slot.updated_at = modified_at
