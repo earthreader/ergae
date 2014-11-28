@@ -20,6 +20,14 @@ $link-color: #1b98f8;
 $title-background-color: #252a3a;
 $title-progress-background-color: $link-color;
 $subscription-list-background-color: $title-background-color;
+$subscription-link-color: white;
+$subscription-link-hover-background-color: #373c5a;
+$entry-title-color: black;
+$entry-selected-background-color: #eee;
+$entry-hover-background-color: #eee;
+$entry-unread-border-color: #1b98f8;
+$no-entry-color: #ccc;
+$border-color: #ddd;
 
 @mixin fa-icon {
   font-family: FontAwesome, sans-serif;
@@ -135,12 +143,100 @@ form.link-dropbox {
   }
 }
 
+body.mod-reader > .content {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
 nav.subscription-list {
   background-color: $subscription-list-background-color;
+  height: 100%;
+  overflow-y: scroll;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    a {
+      background-color: transparent;
+      color: $subscription-link-color;
+      display: block;
+      line-height: 1.5em;
+      margin-left: 0.5em;
+      overflow-x: hidden;
+      padding: 5px 20px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      transition: background-color 0.5s;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: $subscription-link-hover-background-color;
+      }
+    }
+  }
 }
 
 aside.entry-list {
+  height: 100%;
+  overflow-y: scroll;
+
+  .entry {
+    border-bottom: 1px solid $border-color;
+    border-left: 5px solid transparent;
+    padding: 0.9em 1em;
+
+    &.clickable {
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color 0.4s;
+
+      &:hover { background-color: $entry-hover-background-color; }
+      h2 a { text-decoration: none; }
+    }
+
+    &.unread { border-left-color: $entry-unread-border-color; }
+
+    .author {
+      font-size: small;
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0;
+      text-transform: none;
+
+      a { color: $entry-title-color; }
+    }
+
+    .excerpt {
+      font-size: small;
+      margin: 0;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+  }
 }
 
 article.entry {
+  border-left: 1px solid $border-color;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: scroll;
+
+  .no-entry {
+    color: $no-entry-color;
+    cursor: default;
+    font-size: xx-large;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
+

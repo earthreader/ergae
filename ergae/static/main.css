@@ -15,34 +15,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/* line 31, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 39, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 html, button, input, select, textarea, .pure-g [class*='pure-u'] {
   font-family: 'Open Sans', serif; }
 
-/* line 35, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 43, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 p, dl, ol, ul {
   line-height: 160%; }
 
-/* line 39, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 47, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 a {
   color: #1b98f8;
   text-decoration: none; }
 
-/* line 44, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 52, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 a:hover {
   text-decoration: underline; }
 
-/* line 48, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 56, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 a.pure-button {
   text-decoration: inherit; }
 
-/* line 52, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 60, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 aside h1, aside h2, aside h3 {
   color: #999;
   font-size: medium;
   text-transform: uppercase; }
 
-/* line 58, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 66, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 .box {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -51,336 +51,336 @@ aside h1, aside h2, aside h3 {
   margin: 0;
   padding: 1em; }
 
-/* line 67, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 75, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 .title {
   background-color: #252a3a;
   color: #fff;
   font-weight: 300; }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-1 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 1%, #252a3a 1%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-2 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 2%, #252a3a 2%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-3 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 3%, #252a3a 3%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-4 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 4%, #252a3a 4%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-5 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 5%, #252a3a 5%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-6 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 6%, #252a3a 6%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-7 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 7%, #252a3a 7%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-8 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 8%, #252a3a 8%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-9 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 9%, #252a3a 9%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-10 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 10%, #252a3a 10%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-11 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 11%, #252a3a 11%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-12 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 12%, #252a3a 12%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-13 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 13%, #252a3a 13%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-14 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 14%, #252a3a 14%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-15 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 15%, #252a3a 15%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-16 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 16%, #252a3a 16%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-17 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 17%, #252a3a 17%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-18 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 18%, #252a3a 18%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-19 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 19%, #252a3a 19%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-20 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 20%, #252a3a 20%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-21 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 21%, #252a3a 21%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-22 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 22%, #252a3a 22%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-23 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 23%, #252a3a 23%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-24 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 24%, #252a3a 24%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-25 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 25%, #252a3a 25%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-26 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 26%, #252a3a 26%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-27 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 27%, #252a3a 27%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-28 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 28%, #252a3a 28%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-29 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 29%, #252a3a 29%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-30 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 30%, #252a3a 30%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-31 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 31%, #252a3a 31%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-32 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 32%, #252a3a 32%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-33 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 33%, #252a3a 33%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-34 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 34%, #252a3a 34%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-35 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 35%, #252a3a 35%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-36 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 36%, #252a3a 36%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-37 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 37%, #252a3a 37%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-38 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 38%, #252a3a 38%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-39 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 39%, #252a3a 39%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-40 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 40%, #252a3a 40%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-41 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 41%, #252a3a 41%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-42 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 42%, #252a3a 42%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-43 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 43%, #252a3a 43%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-44 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 44%, #252a3a 44%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-45 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 45%, #252a3a 45%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-46 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 46%, #252a3a 46%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-47 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 47%, #252a3a 47%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-48 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 48%, #252a3a 48%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-49 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 49%, #252a3a 49%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-50 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 50%, #252a3a 50%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-51 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 51%, #252a3a 51%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-52 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 52%, #252a3a 52%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-53 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 53%, #252a3a 53%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-54 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 54%, #252a3a 54%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-55 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 55%, #252a3a 55%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-56 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 56%, #252a3a 56%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-57 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 57%, #252a3a 57%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-58 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 58%, #252a3a 58%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-59 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 59%, #252a3a 59%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-60 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 60%, #252a3a 60%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-61 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 61%, #252a3a 61%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-62 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 62%, #252a3a 62%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-63 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 63%, #252a3a 63%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-64 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 64%, #252a3a 64%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-65 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 65%, #252a3a 65%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-66 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 66%, #252a3a 66%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-67 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 67%, #252a3a 67%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-68 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 68%, #252a3a 68%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-69 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 69%, #252a3a 69%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-70 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 70%, #252a3a 70%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-71 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 71%, #252a3a 71%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-72 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 72%, #252a3a 72%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-73 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 73%, #252a3a 73%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-74 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 74%, #252a3a 74%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-75 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 75%, #252a3a 75%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-76 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 76%, #252a3a 76%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-77 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 77%, #252a3a 77%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-78 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 78%, #252a3a 78%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-79 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 79%, #252a3a 79%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-80 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 80%, #252a3a 80%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-81 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 81%, #252a3a 81%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-82 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 82%, #252a3a 82%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-83 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 83%, #252a3a 83%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-84 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 84%, #252a3a 84%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-85 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 85%, #252a3a 85%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-86 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 86%, #252a3a 86%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-87 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 87%, #252a3a 87%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-88 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 88%, #252a3a 88%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-89 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 89%, #252a3a 89%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-90 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 90%, #252a3a 90%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-91 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 91%, #252a3a 91%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-92 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 92%, #252a3a 92%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-93 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 93%, #252a3a 93%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-94 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 94%, #252a3a 94%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-95 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 95%, #252a3a 95%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-96 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 96%, #252a3a 96%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-97 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 97%, #252a3a 97%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-98 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 98%, #252a3a 98%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-99 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 99%, #252a3a 99%, #252a3a); }
-  /* line 72, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 80, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   .title.progress-100 {
     background: linear-gradient(to right, #1b98f8, #1b98f8 100%, #252a3a 100%, #252a3a); }
 
-/* line 84, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 92, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 h2.path {
   font-weight: 300; }
-  /* line 88, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 96, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   h2.path a:before, h2.path span:before {
     font-family: FontAwesome, sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     text-decoration: none !important;
     padding-right: 0.2em; }
-  /* line 94, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 102, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   h2.path a.root:before, h2.path span.root:before {
     content: '\f16b'; }
-  /* line 95, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 103, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   h2.path a.folder:before, h2.path span.folder:before {
     content: '\f115'; }
 
-/* line 99, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 107, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 ul.folders {
   padding: 0; }
-  /* line 102, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  /* line 110, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
   ul.folders li {
     list-style: none; }
-    /* line 106, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    /* line 114, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
     ul.folders li a:before {
       font-family: FontAwesome, sans-serif;
       -moz-osx-font-smoothing: grayscale;
@@ -388,31 +388,119 @@ ul.folders {
       text-decoration: none !important;
       content: '\f07b';
       padding-right: 0.5em; }
-    /* line 113, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    /* line 121, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
     ul.folders li a:hover:before {
       content: '\f07c'; }
-    /* line 116, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    /* line 124, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
     ul.folders li.up a:before {
       content: '\f148'; }
 
-/* line 122, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 130, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 form.link-dropbox button:before {
   font-family: FontAwesome, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-decoration: none !important; }
-/* line 126, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 134, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 form.link-dropbox button.link-repository:before {
   content: '\f058';
   padding-right: 0.3em; }
-/* line 131, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+/* line 139, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
 form.link-dropbox button.new-folder:before {
   content: '\f114';
   padding-right: 0.5em; }
 
-/* line 138, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
-nav.subscription-list {
-  background-color: #252a3a; }
+/* line 146, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+body.mod-reader > .content {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; }
 
+/* line 154, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+nav.subscription-list {
+  background-color: #252a3a;
+  height: 100%;
+  overflow-y: scroll; }
+  /* line 159, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  nav.subscription-list ul {
+    margin: 0;
+    padding: 0; }
+    /* line 163, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    nav.subscription-list ul a {
+      background-color: transparent;
+      color: white;
+      display: block;
+      line-height: 1.5em;
+      margin-left: 0.5em;
+      overflow-x: hidden;
+      padding: 5px 20px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      transition: background-color 0.5s;
+      white-space: nowrap; }
+      /* line 176, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+      nav.subscription-list ul a:hover {
+        background-color: #373c5a; }
+
+/* line 183, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+aside.entry-list {
+  height: 100%;
+  overflow-y: scroll; }
+  /* line 187, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  aside.entry-list .entry {
+    border-bottom: 1px solid #ddd;
+    border-left: 5px solid transparent;
+    padding: 0.9em 1em; }
+    /* line 192, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    aside.entry-list .entry.clickable {
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color 0.4s; }
+      /* line 197, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+      aside.entry-list .entry.clickable:hover {
+        background-color: #eee; }
+      /* line 198, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+      aside.entry-list .entry.clickable h2 a {
+        text-decoration: none; }
+    /* line 201, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    aside.entry-list .entry.unread {
+      border-left-color: #1b98f8; }
+    /* line 203, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    aside.entry-list .entry .author {
+      font-size: small;
+      margin: 0; }
+    /* line 208, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    aside.entry-list .entry h2 {
+      margin: 0;
+      text-transform: none; }
+      /* line 212, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+      aside.entry-list .entry h2 a {
+        color: black; }
+    /* line 215, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+    aside.entry-list .entry .excerpt {
+      font-size: small;
+      margin: 0;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%; }
+
+/* line 226, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+article.entry {
+  border-left: 1px solid #ddd;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: scroll; }
+  /* line 232, /Users/dahlia/Projects/ergae/ergae/static/main.scss */
+  article.entry .no-entry {
+    color: #ccc;
+    cursor: default;
+    font-size: xx-large;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%); }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
+{% set subscriptions = g.stage.subscriptions.recursive_subscriptions %}
 {% block title -%}
-  {{ subscriptions.title }} &mdash; {{ super() }}
+  {% if subscriptions.title -%}
+    {{ subscriptions.title }} &mdash;
+  {%- endif %}
+  {{ super() }}
 {%- endblock %}
 {% block content %}
   <nav class="subscription-list pure-u-1-6">
     <ul>
       {% for sub in subscriptions|sort(attribute='label') %}
-        <li><a href="?{{ sub.feed_id }}">{{ sub.label }}</a></li>
+        <li data-icon-src="{{ sub.icon_uri or '' }}">
+          <a href="{{ url_for('.feed', feed_id=sub.feed_id) }}"
+             title="{{ sub.label }}">
+            {{- sub.label -}}
+          </a>
+        </li>
       {% endfor %}
     </ul>
   </nav>
@@ -16,7 +25,7 @@
   </aside>
   <article class="entry pure-u-7-12">
     {%- block entry -%}
-      No entry selected
+      <div class="no-entry">No entry selected</div>
     {%- endblock -%}
   </article>
 {% endblock %}

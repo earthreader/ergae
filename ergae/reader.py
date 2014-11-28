@@ -19,6 +19,7 @@ from flask import Blueprint, g, redirect, render_template, request, url_for
 from google.appengine.api.users import get_current_user
 from libearth.defaults import get_default_subscriptions
 from libearth.feed import Person
+from werkzeug.exceptions import NotFound
 
 from .config import get_config
 from .stage import get_stage
@@ -105,6 +106,14 @@ def initialize_subscriptions():
 @mod.route('/feeds/')
 def subscriptions():
     with g.stage:
-        subscriptions = g.stage.subscriptions.recursive_subscriptions
-        return render_template('reader/subscriptions.html',
-                               subscriptions=subscriptions)
+        return render_template('reader/subscriptions.html')
+
+
+@mod.route('/feeds/<feed_id>/')
+def feed(feed_id):
+    with g.stage:
+        try:
+            feed_ = g.stage.feeds[feed_id]
+        except LookupError:
+            raise NotFound()
+        return render_template('reader/feed.html', feed=feed_)
