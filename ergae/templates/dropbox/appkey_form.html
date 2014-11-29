@@ -47,6 +47,8 @@
         Only supported via the Core API.</dd>
       <dt>OAuth 2 &mdash; Redirect URIs</dt>
       <dd><code>{{ url_for('.finish_auth', _external=True) }}</code></dd>
+      <dt>Webhook URIs</dt>
+      <dd><code>{{ url_for('.webhook', _external=True) }}</code></dd>
     </dl>
   </aside>
 {% endblock %}
