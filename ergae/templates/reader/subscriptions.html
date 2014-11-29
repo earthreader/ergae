@@ -10,7 +10,8 @@
   <nav class="subscription-list pure-u-1-6">
     <ul>
       {% for sub in subscriptions|sort(attribute='label') %}
-        <li data-icon-src="{{ sub.icon_uri or '' }}">
+        <li data-icon-src="{{ sub.icon_uri or '' }}"
+            {% if sub.feed_id == feed_id %} class="selected" {% endif %}>
           <a href="{{ url_for('.feed', feed_id=sub.feed_id) }}"
              title="{{ sub.label }}">
             {{- sub.label -}}

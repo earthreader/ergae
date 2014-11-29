@@ -1,6 +1,8 @@
 Ergae: Earth Reader on Google App Engine
 ========================================
 
+.. image:: screenshot.png
+
 How to setup development environment
 ------------------------------------
 

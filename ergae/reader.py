@@ -15,8 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import hashlib
+
 from flask import Blueprint, g, redirect, render_template, request, url_for
 from google.appengine.api.users import get_current_user
+from jinja2 import Markup
 from libearth.defaults import get_default_subscriptions
 from libearth.feed import Person
 from werkzeug.exceptions import NotFound
@@ -109,6 +112,18 @@ def subscriptions():
         return render_template('reader/subscriptions.html')
 
 
+def get_entry_key(entry):
+    entry_id = entry.id
+    if entry_id.startswith(('http://', 'https://')):
+        entry_id = hashlib.sha1(entry_id).hexdigest()
+    return entry_id
+
+
+@mod.context_processor
+def register_functions():
+    return {'get_entry_key': get_entry_key}
+
+
 @mod.route('/feeds/<feed_id>/')
 def feed(feed_id):
     with g.stage:
@@ -116,4 +131,31 @@ def feed(feed_id):
             feed_ = g.stage.feeds[feed_id]
         except LookupError:
             raise NotFound()
-        return render_template('reader/feed.html', feed=feed_)
+        return render_template(
+            'reader/feed.html',
+            feed_id=feed_id, feed=feed_
+        )
+
+
+@mod.route('/feeds/<feed_id>/entries/<entry_key>/')
+def entry(feed_id, entry_key):
+    with g.stage:
+        feed_ = g.stage.feeds[feed_id]
+        for entry_ in feed_.entries:
+            if get_entry_key(entry_) == entry_key:
+                break
+        else:
+            raise NotFound()
+        if not entry_.read:
+            entry_.read = True
+            g.stage.feeds[feed_id] = feed_
+        content = entry_.content or entry_.summary
+        permalink = entry_.links.permalink or feed_.links.permalink
+        assert permalink
+        content = content.get_sanitized_html(base_uri=permalink.uri)
+        return render_template(
+            'reader/entry.html',
+            feed_id=feed_id, feed=feed_,
+            entry_key=entry_key, entry=entry_, entry_permalink=permalink,
+            entry_content=Markup(content)
+        )

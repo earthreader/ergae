@@ -22,10 +22,13 @@ $title-progress-background-color: $link-color;
 $subscription-list-background-color: $title-background-color;
 $subscription-link-color: white;
 $subscription-link-hover-background-color: #373c5a;
+$subscription-link-selected-background-color:
+  $subscription-link-hover-background-color;
 $entry-title-color: black;
 $entry-selected-background-color: #eee;
 $entry-hover-background-color: #eee;
 $entry-unread-border-color: #1b98f8;
+$published-time-color: #ccc;
 $no-entry-color: #ccc;
 $border-color: #ddd;
 
@@ -177,6 +180,10 @@ nav.subscription-list {
         background-color: $subscription-link-hover-background-color;
       }
     }
+
+    .selected a {
+      background-color: $subscription-link-selected-background-color;
+    }
   }
 }
 
@@ -199,6 +206,7 @@ aside.entry-list {
     }
 
     &.unread { border-left-color: $entry-unread-border-color; }
+    &.selected { background-color: $entry-selected-background-color; }
 
     .author {
       font-size: small;
@@ -237,6 +245,32 @@ article.entry {
     text-align: center;
     top: 50%;
     transform: translateY(-50%);
+  }
+
+  .metadata {
+    border-bottom: 1px solid $border-color;
+    padding: 1em 2em;
+
+    h2 {
+      margin: 0;
+
+      a { color: $entry-title-color; }
+    }
+
+    .author-date {
+      margin: 0;
+
+      time { color: $published-time-color; }
+    }
+  }
+
+  .content {
+    padding: 1em 2em;
+
+    img {
+      height: auto;
+      max-width: 80%;
+    }
   }
 }
 

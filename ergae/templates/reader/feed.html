@@ -4,23 +4,30 @@
 {%- endblock %}
 {% block entry_list %}
   {% for entry in feed.entries %}
-    <div class="entry {% if entry.read %} read {% else %} unread {% endif %}">
-      <h3 class="author">
-        {%- for author in entry.authors -%}
-          {%- if not loop.first -%}
-            ,
-            {% if loop.last %} and {% endif %}
+    {% with this_entry_key = get_entry_key(entry) %}
+      <div class="entry
+                  {% if entry.read %} read {% else %} unread {% endif %}
+                  {% if this_entry_key == entry_key %} selected {% endif %}">
+        <h3 class="author">
+          {%- for author in entry.authors -%}
+            {%- if not loop.first -%}
+              ,
+              {% if loop.last %} and {% endif %}
+            {% endif %}
+            {{ author.name }}
+          {%- endfor -%}
+        </h3>
+        <h2><a href="{{ url_for('.entry',
+                                feed_id=feed_id,
+                                entry_key=this_entry_key) }}">
+          {{- entry }}</a></h2>
+        {% with excerpt = ((entry.summary or entry.content)|string).strip() %}
+          {% if excerpt %}
+            <p class="excerpt">{{ excerpt.splitlines()|first }}</p>
           {% endif %}
-          {{ author.name }}
-        {%- endfor -%}
-      </h3>
-      <h2><a href="?{{ entry.id }}">{{ entry }}</a></h2>
-      {% with excerpt = ((entry.summary or entry.content)|string).strip() %}
-        {% if excerpt %}
-          <p class="excerpt">{{ excerpt.splitlines()|first }}</p>
-        {% endif %}
-      {% endwith %}
-    </div>
+        {% endwith %}
+      </div>
+    {% endwith %}
   {% endfor %}
   <script>
     (function ($) {

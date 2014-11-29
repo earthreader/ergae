@@ -1,0 +1,22 @@
+{% extends 'reader/feed.html' %}
+{% block title -%}
+  {{ entry }} &mdash; {{ super() }}
+{%- endblock %}
+{% block entry %}
+  <div class="metadata">
+    <h2><a href={{ entry_permalink.uri }}"" rel="alternate">{{ entry }}</a></h2>
+    <p class="author-date">By
+      {% for author in entry.authors -%}
+        {%- if not loop.first -%}
+          ,
+          {% if loop.last %} and {% endif %}
+        {% endif %}
+        {{ author }}
+      {%- endfor %}
+      <time datetime="{{ entry.published_at.isoformat() }}">
+        {{- entry.published_at.strftime('%I:%M %p, %B %d, %Y %Z') -}}
+      </time>
+    </p>
+  </div>
+  <div class="content">{{ entry_content }}</div>
+{% endblock %}
