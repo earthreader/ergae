@@ -16,8 +16,7 @@
 from __future__ import absolute_import
 
 from google.appengine.api.memcache import delete, get, set as put
-from google.appengine.ext.db import Model
-from google.appengine.ext.ndb import PickleProperty
+from google.appengine.ext.ndb import Model, PickleProperty
 
 __all__ = 'Config', 'get_config', 'set_config'
 
@@ -26,13 +25,13 @@ def get_config(key):
     value = get(key, namespace='config')
     if value:
         return value
-    pair = Pair.get_by_key_name(key)
+    pair = Pair.get_by_id(key)
     return pair and pair.value
 
 
 def set_config(key, value):
     if value is None:
-        pair = Pair.get(key)
+        pair = Pair.get_by_id(key)
         if pair is not None:
             pair.delete()
         delete(key, namespace='config')
